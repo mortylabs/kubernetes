@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi
+  labels:
+    app: unifi
+spec:
+  replicas: 1
+#  strategy:
+#    rollingUpdate:
+#      maxSurge: 1
+  selector:
+    matchLabels:
+      app: unifi
+  template:
+    metadata:
+      labels:
+        app: unifi
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-unifi
+      dnsPolicy: ClusterFirstWithHostNet
+      containers: 
+      - image: ghcr.io/linuxserver/unifi-controller:latest
+        name: unifi
+#        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MEM_LIMIT
+          value: 1024M
+        - name: PGID
+          value: "1000"
+        - name: PUID
+          value: "1000"
+        volumeMounts:
+          - mountPath: /config
+            name: data-volume
+        ports:
+          - containerPort: 3478           #stun
+            protocol: UDP
+          - containerPort: 10001          # discovery
+            protocol: UDP
+          - containerPort: 8080           # inform
+          - containerPort: 8081
+          - containerPort: 8443
+          - containerPort: 8843
+          - containerPort: 8880
+          - containerPort: 6789          # speedtest
+          - containerPort: 5000
+          - containerPort: 1900          #l2-network
+            protocol: UDP
+          - containerPort: 11081
+          - containerPort: 5514
+            protocol: UDP
+          - containerPort: 8881    #hotspot redir1
+          - containerPort: 8882    #hotspot redir2
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: pvc-unifi
+      restartPolicy: Always
+
