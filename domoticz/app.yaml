@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domoticz-deployment
+  labels:
+    app: domoticz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domoticz
+  template:
+    metadata:
+      labels:
+        app: domoticz
+    spec:
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-domoticz
+      containers:
+      - name: domoticz
+        image: demydiuk/domoticz
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            name: domoticz-http
+        livenessProbe:
+          tcpSocket:
+            port: domoticz-http  #named port
+          initialDelaySeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /#/Dashboard
+            port: domoticz-http
+#          exec:
+#            command:
+#              - ping 192.168.1.95:8080
+          initialDelaySeconds: 3
+        volumeMounts:
+        - name: data-volume
+          mountPath: /config
+          subPath: config
+        - name: data-volume
+          mountPath: /opt/domoticz/scripts/lua
+          subPath: lua
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: domoticz-service
+spec:
+  selector:
+    app: domoticz
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8080
+      nodePort: 30002
+    

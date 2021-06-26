@@ -1,0 +1,29 @@
+# change 192.168.1.15 to be the fixed IP address of your NFS filer
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-domoticz
+spec:
+  capacity:
+    storage: 500M
+  accessModes:
+    - ReadWriteOnce    #volume can be mounted as RW by single node. ReadWriteMany = RW by many nodes
+  nfs:
+    path: /home/pi/k8sdata/domoticz
+    server: 192.168.1.15
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: pvc-domoticz
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-domoticz
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500M
