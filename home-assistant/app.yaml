@@ -1,0 +1,92 @@
+gapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  labels:
+    app: home-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-home-assistant
+#      - name: music-volume
+#        hostPath:
+#          path: /home/pi/Music
+#      - name: python-volume
+#        hostPath:
+#          path: /home/pi/python
+      - name: dev-usb0
+        hostPath:
+          path: /dev/ttyACM0
+      - name: dev-ama0
+        hostPath:
+          path: /dev/ttyAMA0
+#      - name: dev-snd
+#        hostPath:
+#          path: /dev/snd
+      containers:
+      - name: home-assistant
+        image: homeassistant/raspberrypi4-homeassistant:stable
+        imagePullPolicy: IfNotPresent
+#        imagePullPolicy: Always
+        env:
+          - name: TZ
+            value: Europe/London
+        volumeMounts:
+#        - name: music-volume
+#          mountPath: /home/pi/Music
+#        - name: python-volume
+#          mountPath: /home/pi/python
+        - name: data-volume
+          mountPath: /config
+        - name: dev-usb0
+          mountPath: "/dev/ttyACM0"
+        - name: dev-ama0
+          mountPath: "/dev/ttyAMA0"
+#        - name: dev-snd
+#          mountPath: "/dev/snd" 
+        securityContext:
+          privileged: true
+      restartPolicy: Always
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant-service
+  labels: 
+    app: home-assistant
+spec:
+  selector:
+    app: home-assistant
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8123
+      targetPort: 8123
+      nodePort: 31123
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant
+spec:
+  ports:
+  - name: ha
+    port: 80
+    protocol: TCP
+    targetPort: 8123
+  type: ClusterIP
+  clusterIP: None
+
