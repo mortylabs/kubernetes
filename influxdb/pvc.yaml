@@ -1,0 +1,52 @@
+# replace 192.168.1.15 with the fixed IP of your NFS server
+# replace  /home/pi/nfs/k8sdata with the path to your NFS server folder
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-influxdb
+spec:
+  capacity:
+    storage: 50M
+  accessModes:
+    - ReadWriteOnce    #volume can be mounted as RW by single node
+  nfs:
+    path: /home/pi/nfs/k8sdata/influxdb
+    server: 192.168.1.15
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: pvc-influxdb
+ 
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-influxdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50M
+
+ 
+#---    
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: pvc-influxdb
+#  labels:
+#    app: influxdb
+#  annotations:
+#    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 50Mi
+
+
