@@ -1,0 +1,76 @@
+#replace "yourdomain.com" with your actual domain i.e. sillyshirts.com. NB - replace it in TWO places! ;)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - image: grafana/grafana
+        name: grafana
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_INSTALL_PLUGINS
+          value: "grafana-simple-json-datasource"
+        - name: GF_PANELS_DISABLE_SANITIZE_HTML
+          value: "true"
+        - name: GF_SERVER_DOMAIN
+          value: "yourdomain.com"
+        - name: GF_SERVER_ROOT_URL
+          value: "https://yourdomain.com/grafana/"
+        - name: GF_SERVER_SERVE_FROM_SUB_PATH
+          value: "true"
+        volumeMounts:
+        - name: data-volume
+          mountPath: /var/lib/grafana
+      restartPolicy: Always
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-grafana
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service-np
+  labels:
+    app: grafana
+spec:
+  selector:
+    app: grafana
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  selector:
+    app: grafana
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
