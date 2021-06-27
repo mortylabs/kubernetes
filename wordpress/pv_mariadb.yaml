@@ -1,0 +1,52 @@
+# replace  192.168.1.15 with the fixed IP of your NFS server
+# replace  /home/pi/nfs/k8sdata with the path to your NFS server folder
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mariadb
+  namespace: wordpress
+spec:
+  capacity:
+    storage: 500M
+  accessModes:
+    - ReadWriteOnce    #volume can be mounted as RW by single node
+  nfs:
+    path: /home/pi/nfs/k8sdata/wordpress_mariadb
+    server: 192.168.1.15
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: wordpress
+    name: pvc-mariadb
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-mariadb
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500M
+
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: pvc-mariadb
+#  namespace: wordpress
+#  labels:
+#    app: mariadb
+#  annotations:
+#    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 1Gi
+

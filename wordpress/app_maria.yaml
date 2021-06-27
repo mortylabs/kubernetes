@@ -1,0 +1,87 @@
+#  kubectl create namespace wordpress
+
+# run the following command to encode your secret for DEV/TEST :
+# echo "YOUR_PASSWORD" -n | base64-encoded
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-pass
+  namespace: wordpress
+  labels:
+    app: wordpress
+data:
+  # This value is base64-encoded. Do not use this password in production!
+  password: YOUR_BASE64_ENCODED_PASSWORD
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-mariadb
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mariadb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mariadb
+    spec:
+      containers:
+        - image: linuxserver/mariadb:latest
+          name: mariadb
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/London"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-pass
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mariadb
+          volumeMounts:
+            - name: mariadb-persistent-storage
+              mountPath: /config
+          resources:
+            limits:
+              cpu: '1'
+              memory: '512Mi'
+            requests:
+              cpu: '500m'
+              memory: '256Mi'
+      volumes:
+        - name: mariadb-persistent-storage
+          persistentVolumeClaim:
+            claimName: pvc-mariadb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mariadb
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: wordpress
+    tier: mariadb
