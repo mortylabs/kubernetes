@@ -1,0 +1,55 @@
+# run the following command to encode your secret for DEV/ :
+# echo "YOUR_PASSWORD" -n | base64-encoded
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pihole-pass
+  labels:
+    app: pihole
+data:
+  # This value is base64-encoded. Do not use this password in production!
+  password: YOUR_BASE64_ENCRYPTED_PASSWORD
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+        name: pihole
+    spec:
+      containers:
+      - name: pihole
+        image: pihole/pihole:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: "Europe/London" 
+        - name: WEBPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-pass
+              key: password
+        volumeMounts:
+        - name: data-volume
+          mountPath: /etc/pihole
+          subPath: etc_pihole
+        - name: data-volume
+          mountPath: /etc/dnsmasq.d
+          subPath: etc_dnsmasq.d
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-pihole
