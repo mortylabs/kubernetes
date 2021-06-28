@@ -4,7 +4,7 @@ Here you'll find the yaml manifests for my k3s homelab.
 
 All deployments are running on Rancher k3s but with a MetalLB load balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard, all running the Raspbian Buster operating system. 
 
-For persistent storage, a Network File Server (NFS) is used. Really it's just a raspberry pi with a SSD drive acting as a NFS. When Raspbian OS 64 bit is released I'll switch to LongHorn (no working image available for Raspbian Buster 32-bit)
+For persistent storage, a Network File Server (NFS) is used. Really it's just a raspberry pi with a SSD drive acting as a NFS. When Raspbian OS 64 bit is released I'll switch to Longhorn (currently no working longhorn image available for Raspbian Buster 32-bit)
 
 To learn kubernetes, I decided to write some deployment yamls myself rather than blindly deploy helm charts that someone else has written. 
 
