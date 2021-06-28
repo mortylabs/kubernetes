@@ -36,7 +36,3 @@ kubectl apply -f letsencrypt.yaml
 ```
 
 
-# sources
-https://sysadmins.co.za/https-using-letsencrypt-and-traefik-with-k3s/
-https://opensource.com/article/20/3/ssl-letsencrypt-k3s
-https://kubernetes.github.io/ingress-nginx/deploy/baremetal/
