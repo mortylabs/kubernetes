@@ -51,3 +51,6 @@ kubectl apply -f class.yaml
 kubectl apply -f rbac.yaml
 kubectl apply -f deployment.yaml
 ```
+# installation - applications
+
+for each app, deploy pv.yaml to create the persistent volume and then app.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
