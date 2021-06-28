@@ -6,6 +6,8 @@ To learn kubernetes, I chose to write the raw yamls myself rather than blindly d
 
 All deployments are running on Rancher k3s and Raspberry Pi 4s, with 8GB memory each and a SSD drive replace the sdcard. MetalLB and NGINX reverse proxy have replaced Traefik.
 
+
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 
 
+To install ssh certificates using cert-manager & letsenceypt:
