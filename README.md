@@ -39,3 +39,15 @@ kubectl apply -f letsencrypt.yaml
 ```
 
 
+# installation - NFS
+
+Follow this tutorial to configure your pi as a NFS:
+https://pimylifeup.com/raspberry-pi-nfs/
+
+Then to setup the nfs-client-provisioner in k3s:
+```
+cd pv_nfs
+kubectl apply -f class.yaml
+kubectl apply -f rbac.yaml
+kubectl apply -f deployment.yaml
+```
