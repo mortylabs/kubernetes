@@ -29,7 +29,7 @@ vi metallb-config.yaml  #edit and set the IP address range that has been reserve
 kubectl apply -f metallb-config.yaml
 ```
 
-# installation - enable https ingress using cert-manager & letsenceypt
+# installation - enable https ingress using cert-manager & letsencrypt
 ```
 kubectl create namespace cert-manager
 cd ingress
