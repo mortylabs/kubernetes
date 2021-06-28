@@ -1,0 +1,16 @@
+spec:
+  tls:
+    - secretName: mysite-ha-tls
+      hosts:
+        - ha.YOURDOMAIN.com
+  rules:
+  - host: ha.YOURDOMAIN.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: home-assistant
+              port:
+                number: 8123
