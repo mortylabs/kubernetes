@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mysite-unifi-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  tls:
+    - secretName: mysite-unifi-tls
+      hosts:
+        - unifi.YOURDOMAIN.com
+  rules:
+  - host: unifi.YOURDOMAIN.com
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: unifi-tcp
+              port:
+                number: 8443
+
