@@ -23,7 +23,7 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manif
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/metallb.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 cd metallb
-vi metallb-config.yaml  _**# edit and set the IP address range that has been reserved on your DCHP server ```**_
+vi metallb-config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f metallb-config.yaml
 ```
 # installation - enable https ingress using cert-manager & letsenceypt
@@ -32,6 +32,6 @@ kubectl apply -f metallb-config.yaml
 kubectl create namespace cert-manager
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.yaml
 cd ingress
-vi letsencrypt.yaml _**#update the email address!**_
+vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
