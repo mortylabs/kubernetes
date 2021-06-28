@@ -9,12 +9,8 @@ a SSD drive replace the sdcard. MetalLB and NGINX reverse proxy have replaced Tr
 
 # installation - k3s
 
-```
-curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
-```
+cd ingress
 # installation - NGINX Ingress
-
-```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
 ```
 # installation - MetalLB Load Balancer
@@ -30,8 +26,8 @@ kubectl apply -f metallb-config.yaml
 
 ```
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.yaml
 cd ingress
+kubectl apply -f cert-manager-arm.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
