@@ -8,11 +8,14 @@ All deployments are running on Rancher k3s and Raspberry Pi 4s, with 8GB memory 
 a SSD drive replace the sdcard. MetalLB and NGINX reverse proxy have replaced Traefik.
 
 # installation - k3s
+```curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
+```
 
-cd ingress
 # installation - NGINX Ingress
+```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
 ```
+
 # installation - MetalLB Load Balancer
 ```
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/namespace.yaml
@@ -22,8 +25,8 @@ cd metallb
 vi metallb-config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f metallb-config.yaml
 ```
-# installation - enable https ingress using cert-manager & letsenceypt
 
+# installation - enable https ingress using cert-manager & letsenceypt
 ```
 kubectl create namespace cert-manager
 cd ingress
@@ -31,3 +34,9 @@ kubectl apply -f cert-manager-arm.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
+
+
+# sources
+https://sysadmins.co.za/https-using-letsencrypt-and-traefik-with-k3s/
+https://opensource.com/article/20/3/ssl-letsencrypt-k3s
+https://kubernetes.github.io/ingress-nginx/deploy/baremetal/
