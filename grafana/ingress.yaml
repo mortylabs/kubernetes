@@ -1,0 +1,16 @@
+spec:
+  tls:
+    - secretName: mysite-grafana-tls
+      hosts:
+        - YOUR-DOMAIN-GOES-HERE.com
+  rules:
+  - host: YOUR-DOMAIN-GOES-HERE.com
+    http:
+      paths:
+        - path: /grafana
+          pathType: Prefix
+          backend:
+            service:
+              name: grafana
+              port:
+                number: 3000
