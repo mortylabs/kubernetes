@@ -7,7 +7,7 @@ To learn kubernetes, I chose to write the raw yamls myself rather than blindly d
 All deployments are running on Rancher k3s and Raspberry Pi 4s, with 8GB memory each and
 a SSD drive replace the sdcard. MetalLB and NGINX reverse proxy have replaced Traefik.
 
-For persistent storage, a Network File Server (NFS) is used. Really it's just a raspberry pi with a SSD drive acting as a NFS. When Raspbian OS 64 bit is released I'll be able to switch to LongHorn. 
+For persistent storage, a Network File Server (NFS) is used. Really it's just a raspberry pi with a SSD drive acting as a NFS. When Raspbian OS 64 bit is released I'll switch to LongHorn (no working image available for Raspbian Buster 32-bit)
 
 # installation - k3s
 ```curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
