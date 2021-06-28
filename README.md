@@ -10,7 +10,8 @@ a SSD drive replace the sdcard. MetalLB and NGINX reverse proxy have replaced Tr
 For persistent storage, a Network File Server (NFS) is used. Really it's just a raspberry pi with a SSD drive acting as a NFS. When Raspbian OS 64 bit is released I'll switch to LongHorn (no working image available for Raspbian Buster 32-bit)
 
 # installation - k3s
-```curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
+```
+curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 ```
 
 # installation - NGINX Ingress
