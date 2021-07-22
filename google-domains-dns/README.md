@@ -12,6 +12,7 @@ Four secrets (username/password) are created to hold the credentials for each of
 Each container runs the same curl image, the image size is 4MB at the time of writing, so pretty small and light-weight. :) 
 
 When encoding credentials in BASE64, sometimes a newline char is added, which corrupts the secret. To get around this:
+
 echo -n 'mypassword' | base64
 
 Obviously delete the sub-domains you don't need.
