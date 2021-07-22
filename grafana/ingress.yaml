@@ -1,4 +1,5 @@
 apiVersion: networking.k8s.io/v1
+# the working example below demonstrates a sub-path URL. Included (and commented out) is a sub-domain example too
 kind: Ingress
 metadata:
   name: mysite-grafana-ingress
@@ -11,6 +12,7 @@ spec:
     - secretName: mysite-grafana-tls
       hosts:
         - YOUR-DOMAIN-GOES-HERE.com
+#        - grafana.YOUR-DOMAIN-GOES-HERE.com
   rules:
   - host: YOUR-DOMAIN-GOES-HERE.com
     http:
@@ -22,3 +24,14 @@ spec:
               name: grafana
               port:
                 number: 3000
+
+#  - host: grafana.YOUR-DOMAIN-GOES-HERE.com
+#    http:
+#      paths:
+#        - path: /
+#          pathType: Prefix
+#          backend:
+#            service:
+#              name: grafana
+#              port:
+#                number: 3000
