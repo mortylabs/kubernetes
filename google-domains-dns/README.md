@@ -13,6 +13,6 @@ Each container runs the same curl image, the image size is 4MB at the time of wr
 
 When encoding credentials in BASE64, sometimes a newline char is added, which corrupts the secret. To get around this:
 
-echo -n 'mypassword' | base64
+`echo -n 'mypassword' | base64`
 
 Obviously delete the sub-domains you don't need.
