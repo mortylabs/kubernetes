@@ -34,6 +34,14 @@ data:
   GOOGLE_PASS: BASE64_ENCODED_VALUE_HERE
 ---
 
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ddns-secret-grafana
+data:
+  GOOGLE_USER: BASE64_ENCODED_VALUE_HERE
+  GOOGLE_PASS: BASE64_ENCODED_VALUE_HERE
+---
 
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -80,6 +88,17 @@ spec:
             envFrom:
             - secretRef:
                 name: ddns-secret-ha
+                
+          - name: grafana
+            image: docker.io/curlimages/curl:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - curl -s -u ${GOOGLE_USER}:${GOOGLE_PASS} "https://domains.google.com/nic/update?hostname=grafana.YOUR_DOMAIN.com"
+            envFrom:
+            - secretRef:
+                name: ddns-secret-grafana
 
           - name: pihole
             image: docker.io/curlimages/curl:latest
