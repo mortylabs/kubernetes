@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ddns-secret-mortylabs-ha
+data:
+  GOOGLE_USER: cWZzbnRzenRNeUZaeU94Mw==
+  GOOGLE_PASS: alQ1bWZNR201VXVDNWhMRA==
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ddns-secret-mortylabs-unifi
+data:
+  GOOGLE_USER: NG82Q1FaUWN2SFRFMG1BaQ==
+  GOOGLE_PASS: cG5JcEpCQ2c2ME9ONkwwZA==
+
+---
+
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ddns-mortylabs
+spec:
+  schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: unifi
+            image: docker.io/curlimages/curl:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - curl -s -u ${GOOGLE_USER}:${GOOGLE_PASS} "https://domains.google.com/nic/update?hostname=unifisa.mortylabs.com"
+            envFrom:
+            - secretRef:
+                name: ddns-secret-mortylabs-unifi
+
+          - name: ha
+            image: docker.io/curlimages/curl:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - curl -s -u ${GOOGLE_USER}:${GOOGLE_PASS} "https://domains.google.com/nic/update?hostname=hasa.mortylabs.com"
+            envFrom:
+            - secretRef:
+                name: ddns-secret-mortylabs-ha
+
+          restartPolicy: OnFailure
+

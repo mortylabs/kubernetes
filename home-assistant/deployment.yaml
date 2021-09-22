@@ -1,4 +1,4 @@
-gapiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: home-assistant
@@ -39,9 +39,9 @@ spec:
         image: homeassistant/raspberrypi4-homeassistant:stable
         imagePullPolicy: IfNotPresent
 #        imagePullPolicy: Always
-        env:
-          - name: TZ
-            value: Europe/London
+#        env:
+#          - name: TZ
+#            value: Europe/London
         volumeMounts:
 #        - name: music-volume
 #          mountPath: /home/pi/Music
@@ -59,34 +59,3 @@ spec:
           privileged: true
       restartPolicy: Always
       
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: home-assistant-service
-  labels: 
-    app: home-assistant
-spec:
-  selector:
-    app: home-assistant
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 8123
-      targetPort: 8123
-      nodePort: 31123
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: home-assistant
-spec:
-  ports:
-  - name: ha
-    port: 80
-    protocol: TCP
-    targetPort: 8123
-  type: ClusterIP
-  clusterIP: None
-

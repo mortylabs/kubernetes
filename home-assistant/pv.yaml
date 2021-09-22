@@ -12,7 +12,8 @@ spec:
     - ReadWriteOnce    #volume can be mounted as RW by single node
   nfs:
     path: /home/pi/nfs/k8sdata/home-assistant
-    server: 192.168.1.15
+#    server: 192.168.1.15
+    server: 192.168.1.17
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default

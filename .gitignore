@@ -1,0 +1,7 @@
+*.adm
+configmap.yaml.adm
+ingress_sa.yaml
+ingress_uk.yaml
+secrets_sa.yaml
+secrets_uk.yaml
+
