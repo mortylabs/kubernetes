@@ -1,32 +1,3 @@
-# to generate a new password:
-#    mkdir ~/mosquitto
-#    sudo chown -R 1883:1883 ~/mosquitto
-#    docker run -it -p 1883:1883 --name mosquitto --restart always -v ~/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf -v ~/mosquitto/mosquitto.passwd:/mosquitto/config/mosquitto.passwd eclipse-mosquitto
-#    docker exec -it mosquitto /bin/sh
-#    cd mosquitto/config/
-#    mosquitto_passwd -c mosquitto.conf mqtt_user
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cm-mosquitto-conf
-  labels:
-    app: mqtt
-data:
-  mosquitto.conf: |
-    listener 1883
-    persistence true
-    persistence_location /mosquitto/data
-    persistence_file mosquitto.db
-    autosave_interval 60
-    password_file /mosquitto/config/mosquitto.passwd
-    allow_anonymous false
-  mosquitto.passwd: |
-    mqtt_user:YOUR_NEW_ENCRYPTED_PASSWORD_FROM_THE_CONTAINER_UTILITY
-
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -77,19 +48,3 @@ spec:
         - name: config-file
           configMap:
             name: cm-mosquitto-conf 
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mqtt
-spec:
-  ports:
-  - name: port1883
-    protocol: TCP
-    port: 1883
-    targetPort: 1883
-    nodePort: 31883
-  selector:
-    app: mqtt
-  type: NodePort
