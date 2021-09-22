@@ -4,4 +4,5 @@ ingress_sa.yaml
 ingress_uk.yaml
 secrets_sa.yaml
 secrets_uk.yaml
-
+cj_mortylabs_sa.yaml
+cj_mortylabs_uk.yaml
