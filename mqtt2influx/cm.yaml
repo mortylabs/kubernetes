@@ -1,0 +1,21 @@
+# this configmap defines which mqtt topics to subscribe to, and the corresponding influxdb measurement name
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-mqtt2influx
+data:
+  topics.txt: |
+    "epever/state"                                     "epever"
+    'plants/conservatory1/temp/state'                  "conservatory1_temp"
+    'plants/conservatory1/baro/state'                  "conservatory1_baro"
+    'plants/conservatory1/soil1/state'                 "conservatory1_soil1"
+    'greenhouse1_bigsolar/state'                       "greenhouse1_bigsolar"
+    'greenhouse2_bigsolar/state'                       "greenhouse2_bigsolar"
+    'greenhouse1_minisolar/state'                      "greenhouse1_minisolar"
+    'homeassistant/sensor/growtent1_sensor_hum/state'  "growtent1_hum"
+    'homeassistant/sensor/growtent1_sensor_temp/state' "growtent1_temp"
+    'plants/growtent1/uv_index/state'                  'growtent1'
+    'veg1/state'                                       "veg1"
+    'plants/growtent1/uv_index/state'                  "growtent1_uvi"
+    'hottub/state'                                     "hottub"
+

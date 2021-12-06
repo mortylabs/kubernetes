@@ -2,7 +2,10 @@
 configmap.yaml.adm
 ingress_sa.yaml
 ingress_uk.yaml
+ingress_hasa.yaml
 secrets_sa.yaml
 secrets_uk.yaml
 cj_mortylabs_sa.yaml
 cj_mortylabs_uk.yaml
+ingress/letsencrypt_sa.yaml
+letsencrypt_sa.yaml

@@ -1,0 +1,65 @@
+#replace 192.168.1.15 with the IP address of your load balancer or master node hosting the MQTT broker and InfluxDB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mqtt2influx
+  name: mqtt2influx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt2influx
+  template:
+    metadata:
+      labels:
+        app: mqtt2influx
+    spec:
+#      imagePullSecrets:
+#      - name: regcred
+      containers:
+      - image: mortyone/mqtt2influx:latest
+        name: mqtt2influx
+        imagePullPolicy: IfNotPresent
+#        imagePullPolicy: Always
+        ports:
+          - name: "p8086"
+            containerPort: 8086
+          - name: "p31883"
+            containerPort: 31883
+        env:
+          - name: LOGGING_LEVEL
+            value: "DEBUG"
+          - name: INFLUX_SERVER
+            value: "192.168.1.15"
+          - name: INFLUX_PORT
+            value: "8086"
+          - name: INFLUX_DB
+            value: "sensors"
+          - name: INFLUX_USER
+            value: "root"
+          - name: INFLUX_PASS
+            valueFrom:
+              secretKeyRef:
+                name: influx-pass
+                key: password
+          - name: MQTT_SERVER
+            value: "192.168.1.15"
+          - name: MQTT_PORT
+            value: "31883"
+          - name: MQTT_USER
+            value: "mqtt_user"
+          - name: MQTT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mqtt-pass
+                key: password
+        volumeMounts:
+          - name: config-file
+            mountPath: /config
+      restartPolicy: Always
+      volumes:
+        - name: config-file
+          configMap:
+            name: cm-mqtt2influx
+

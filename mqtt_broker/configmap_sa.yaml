@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-mosquitto-conf
+  labels:
+    app: mqtt
+data:
+  mosquitto.conf: |
+    listener 1883
+    persistence true
+    persistence_location /mosquitto/data
+    persistence_file mosquitto.db
+    autosave_interval 60
+    password_file /mosquitto/config/mosquitto.passwd
+    allow_anonymous false
+  mosquitto.passwd: |
+    mqtt_user:$6$10z0nozQfUdvMqq7$ejK3JtC6sf8lQ2JAlPD/vvgrG8dtnj2wXaDEj8mn/f2pGEuijWDHEASmnRIz5xzFpNuvMNPJwZ8jOYi6oQupNw==
+
+
