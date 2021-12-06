@@ -10,6 +10,9 @@ To learn kubernetes, I decided to write some deployment yamls myself rather than
 
 
 # installation - k3s
+
+In file /boot/cmdline.txt add cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 into the end of the file
+
 ```
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 ```
