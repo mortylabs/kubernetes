@@ -19,9 +19,9 @@ spec:
       - name: data-volume
         persistentVolumeClaim:
           claimName: pvc-home-assistant
-#      - name: music-volume
-#        hostPath:
-#          path: /home/pi/Music
+      - name: music-volume
+        hostPath:
+          path: /home/pi/Music
 #      - name: python-volume
 #        hostPath:
 #          path: /home/pi/python
@@ -37,14 +37,14 @@ spec:
       containers:
       - name: home-assistant
         image: homeassistant/raspberrypi4-homeassistant:stable
-        imagePullPolicy: IfNotPresent
-#        imagePullPolicy: Always
+#        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
 #        env:
 #          - name: TZ
 #            value: Europe/London
         volumeMounts:
-#        - name: music-volume
-#          mountPath: /home/pi/Music
+        - name: music-volume
+          mountPath: /config/www/media
 #        - name: python-volume
 #          mountPath: /home/pi/python
         - name: data-volume
