@@ -1,3 +1,4 @@
 *.adm
 configmap.yaml.adm
-
+configmap_sa.yaml
+configmap_uk.yaml
