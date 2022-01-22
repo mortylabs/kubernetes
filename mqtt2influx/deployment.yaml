@@ -20,8 +20,8 @@ spec:
       containers:
       - image: mortyone/mqtt2influx:latest
         name: mqtt2influx
-        imagePullPolicy: IfNotPresent
-#        imagePullPolicy: Always
+#        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
           - name: "p8086"
             containerPort: 8086
@@ -29,7 +29,7 @@ spec:
             containerPort: 31883
         env:
           - name: LOGGING_LEVEL
-            value: "DEBUG"
+            value: "INFO"
           - name: INFLUX_SERVER
             value: "192.168.1.15"
           - name: INFLUX_PORT
