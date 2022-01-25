@@ -1,0 +1,39 @@
+# k create cm cm-room-assistant --from-file=local.yml -o yaml --dry-run > cm.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room-assistant
+  labels:
+    app: room-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: room-assistant
+  template:
+    metadata:
+      labels:
+        app: room-assistant
+    spec:
+      hostNetwork: true
+      restartPolicy: Always
+      containers:
+      - name: room-assistant
+        image: mkerix/room-assistant:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: config-file
+          mountPath: /room-assistant/config
+        - name: dbus
+          mountPath: /var/run/dbus
+        securityContext:
+          privileged: true
+      volumes:
+        - name: config-file
+          configMap:
+            name: cm-room-assistant
+        - name: dbus
+          hostPath:
+            path: /var/run/dbus
+      restartPolicy: Always

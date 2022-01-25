@@ -1,0 +1,30 @@
+apiVersion: v1
+data:
+  local.yml: |
+    # k create cm cm-room-assistant --from-file=local.yml -o yaml --dry-run > cm.yaml
+
+    global:
+      instanceName: Family Room
+      integrations:
+        - homeAssistant
+        - bluetoothLowEnergy
+    homeAssistant:
+      mqttUrl: 'mqtt://192.168.1.15:31883'
+      mqttOptions:
+        username: MQTT_USER_HERE
+        password: MQTT_PASSWORD_HERE
+      discoveryPrefix: homeassistant
+    bluetoothLowEnergy:
+      instanceBeaconEnabled: false
+      allowlist:
+        - edc1666b877c      
+        - d63f266bf4b2    
+
+      tagOverrides:
+        edc1666b877c:
+          name: TAG1 Keys
+        d63f266bf4b2:
+          name: TAG2 Keys
+kind: ConfigMap
+metadata:
+  name: cm-room-assistant
