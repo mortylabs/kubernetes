@@ -6,5 +6,5 @@ Refer to https://www.room-assistant.io/
 
 If you already have your own **local.yml**, convert it to a configmap using:
 ```
- kubectl create cm cm-room-assistant --from-file=local.yml -o yaml --dry-run > cm.yaml0
+ kubectl create cm cm-room-assistant --from-file=local.yml -o yaml --dry-run > cm.yaml
 ```
