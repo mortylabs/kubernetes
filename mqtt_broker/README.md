@@ -3,7 +3,7 @@
 Refer to https://mosquitto.org/
 
 
-# Changing the default User / Password
+# Changing default USER / PASSWORD
 
 ```
 kubectl exec -it deployment/mqtt-deployment -- sh
