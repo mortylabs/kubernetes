@@ -1,0 +1,11 @@
+# this configmap defines which mqtt topics to subscribe to, and the corresponding influxdb measurement name
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-mqtt2influx
+data:
+  topics.txt: |
+    "plants/rainman/temp/state"              "rainman_temp"
+    "plants/rainman/baro/state"              "rainman_baro"
+    "plants/rainman/humid/state"             "rainman_humid"
+
