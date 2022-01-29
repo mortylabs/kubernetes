@@ -1,6 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.21.1+k3s1**. It also works for **v1.22.5+k3s1** as I've just rebuilt my homelab using these instructions.
+Here you'll find the yaml manifests for my k3s homelab running **v1.22.5+k3s1**. 
 
 All deployments are running on Rancher k3s but with a MetalLB load balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard, all running the Raspbian Buster operating system. 
 
@@ -33,6 +33,8 @@ kubectl apply -f metallb-config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
+
+**cert-manager-arm.yaml** below will install cert-manager **v1.7.0**, which is the latest version as of 29th January 2022.
 ```
 kubectl create namespace cert-manager
 cd ingress
@@ -41,7 +43,14 @@ vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
 
+If you need to deploy a different version to your arm infrastructure (raspberry pi etc), replace **v1.7.0** with the relevant version in the cmd below:
+```
+curl -sL \
+https://github.com/jetstack/cert-manager/releases/download/**v1.7.0**/cert-manager.yaml |\
+sed -r 's/(image:.*):(v.*)$/\1-arm:\2/g' > cert-manager-arm.yaml
 
+kubectl apply -f cert-manager-arm.yaml
+```
 # installation - NFS
 
 Follow this tutorial to configure your pi as a NFS:
