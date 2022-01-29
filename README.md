@@ -43,7 +43,7 @@ vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
 
-If you need to deploy a different version to your arm infrastructure (raspberry pi etc), replace **v1.7.0** with the relevant version in the cmd below:
+If you need to deploy a different version to your arm infrastructure (raspberry pi etc), replace v1.7.0 with the relevant version in the cmd below:
 ```
 curl -sL \
 https://github.com/jetstack/cert-manager/releases/download/**v1.7.0**/cert-manager.yaml |\
