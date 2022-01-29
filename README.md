@@ -1,6 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.21.1+k3s1**
+Here you'll find the yaml manifests for my k3s homelab running **v1.21.1+k3s1**. It also works for **v1.22.5+k3s1** as I've just rebuilt my homelab using these instructions.
 
 All deployments are running on Rancher k3s but with a MetalLB load balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard, all running the Raspbian Buster operating system. 
 
