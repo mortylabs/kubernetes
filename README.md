@@ -17,6 +17,19 @@ In file /boot/cmdline.txt add cgroup_enable=cpuset cgroup_enable=memory cgroup_m
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 ```
 
+# installation - NFS
+
+Follow this tutorial to configure your pi as a NFS:
+https://pimylifeup.com/raspberry-pi-nfs/
+
+Then to setup the nfs-client-provisioner in k3s:
+```
+cd pv_nfs
+kubectl apply -f class.yaml
+kubectl apply -f rbac.yaml
+kubectl apply -f deployment.yaml
+```
+
 # installation - NGINX Ingress
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
@@ -51,18 +64,7 @@ sed -r 's/(image:.*):(v.*)$/\1-arm:\2/g' > cert-manager-arm.yaml
 
 kubectl apply -f cert-manager-arm.yaml
 ```
-# installation - NFS
 
-Follow this tutorial to configure your pi as a NFS:
-https://pimylifeup.com/raspberry-pi-nfs/
-
-Then to setup the nfs-client-provisioner in k3s:
-```
-cd pv_nfs
-kubectl apply -f class.yaml
-kubectl apply -f rbac.yaml
-kubectl apply -f deployment.yaml
-```
 # installation - applications
 
-for each app, deploy pv.yaml to create the persistent volume and then app.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
+for each app, deploy pv.yaml to create the persistent volume and then deployment.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
