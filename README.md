@@ -64,6 +64,7 @@ sed -r 's/(image:.*):(v.*)$/\1-arm:\2/g' > cert-manager-arm.yaml
 
 kubectl apply -f cert-manager-arm.yaml
 ```
+Remeber to open ports 80 and 443 on your firewall / router, and redirect traffic to the master node ingress ip from metallb load balancer. In this example it would be 192.168.1.110. So direct port traffic from both 80 and 443 to 192.168.1.110 respectively.
 
 # installation - applications
 
