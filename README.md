@@ -59,7 +59,7 @@ kubectl apply -f letsencrypt.yaml
 If you need to deploy a different version to your arm infrastructure (raspberry pi etc), replace v1.7.0 with the relevant version in the cmd below:
 ```
 curl -sL \
-https://github.com/jetstack/cert-manager/releases/download/**v1.7.0**/cert-manager.yaml |\
+https://github.com/jetstack/cert-manager/releases/download/v1.7.0/cert-manager.yaml |\
 sed -r 's/(image:.*):(v.*)$/\1-arm:\2/g' > cert-manager-arm.yaml
 
 kubectl apply -f cert-manager-arm.yaml
