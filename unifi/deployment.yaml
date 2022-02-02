@@ -18,10 +18,10 @@ spec:
         app: unifi
     spec:
       hostNetwork: true
-      volumes:
-      - name: data-volume
-        persistentVolumeClaim:
-          claimName: pvc-unifi
+#      volumes:
+#      - name: data-volume
+#        persistentVolumeClaim:
+#          claimName: pvc-unifi
       dnsPolicy: ClusterFirstWithHostNet
       containers: 
       - image: ghcr.io/linuxserver/unifi-controller:latest
