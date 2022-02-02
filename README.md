@@ -1,6 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.21.1+k3s1**
+Here you'll find the yaml manifests for my k3s homelab running **v1.22.5+k3s1**. 
 
 All deployments are running on Rancher k3s but with a MetalLB load balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard, all running the Raspbian Buster operating system. 
 
@@ -15,6 +15,19 @@ In file /boot/cmdline.txt add cgroup_enable=cpuset cgroup_enable=memory cgroup_m
 
 ```
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
+```
+
+# installation - NFS
+
+Follow this tutorial to configure your pi as a NFS:
+https://pimylifeup.com/raspberry-pi-nfs/
+
+Then to setup the nfs-client-provisioner in k3s:
+```
+cd pv_nfs
+kubectl apply -f class.yaml
+kubectl apply -f rbac.yaml
+kubectl apply -f deployment.yaml
 ```
 
 # installation - NGINX Ingress
@@ -33,6 +46,8 @@ kubectl apply -f metallb-config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
+
+**cert-manager-arm.yaml** below will install cert-manager **v1.7.0**, which is the latest version as of 29th January 2022.
 ```
 kubectl create namespace cert-manager
 cd ingress
@@ -41,19 +56,16 @@ vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
 
-
-# installation - NFS
-
-Follow this tutorial to configure your pi as a NFS:
-https://pimylifeup.com/raspberry-pi-nfs/
-
-Then to setup the nfs-client-provisioner in k3s:
+If you need to deploy a different version to your arm infrastructure (raspberry pi etc), replace v1.7.0 with the relevant version in the cmd below:
 ```
-cd pv_nfs
-kubectl apply -f class.yaml
-kubectl apply -f rbac.yaml
-kubectl apply -f deployment.yaml
+curl -sL \
+https://github.com/jetstack/cert-manager/releases/download/v1.7.0/cert-manager.yaml |\
+sed -r 's/(image:.*):(v.*)$/\1-arm:\2/g' > cert-manager-arm.yaml
+
+kubectl apply -f cert-manager-arm.yaml
 ```
+Remeber to open ports 80 and 443 on your firewall / router, and redirect traffic to the master node ingress ip from metallb load balancer. In this example it would be 192.168.1.110. So direct port traffic from both 80 and 443 to 192.168.1.110 respectively.
+
 # installation - applications
 
-for each app, deploy pv.yaml to create the persistent volume and then app.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
+for each app, deploy pv.yaml to create the persistent volume and then deployment.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
