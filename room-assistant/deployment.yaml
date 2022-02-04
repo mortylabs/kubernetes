@@ -21,7 +21,8 @@ spec:
       containers:
       - name: room-assistant
         image: mkerix/room-assistant:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+#        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: config-file
           mountPath: /room-assistant/config
