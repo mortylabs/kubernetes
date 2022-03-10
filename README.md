@@ -12,8 +12,12 @@ For persistent storage, a Network File Server (NFS) is used. You could use your 
 
 # installation - k3s
 
-In file /boot/cmdline.txt add cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 into the end of the file
+In file /boot/cmdline.txt add the following to the end of the file:
+```
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+```
 
+Then to install k3s with the default load balancer disabled:
 ```
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 ```
