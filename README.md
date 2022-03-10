@@ -6,7 +6,7 @@ To learn kubernetes, I wrote the deployment yamls myself rather than blindly dep
 
 All deployments are running on Rancher k3s with a MetalLB Load Balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard. The OS used is Raspbian **Bullseye 64 bit**.
 
-For persistent storage, a Network File Server (NFS) is used. You could use your Synology Raid Controller, however my NFS server is simply a raspberry pi with an 500GB SSD drive and automatic backups to GDrive and also github. A lot cheaper and very adequate. 
+For persistent storage, a Network File Server (NFS) is used. You could use your Synology Raid Controller, however my NFS server is simply a raspberry pi with an 500GB SSD drive replacing the SD Card, and automatic backups to GDrive and also github. A lot cheaper and very adequate. 
 
 
 
