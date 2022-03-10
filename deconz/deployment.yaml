@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deconz
+  labels:
+    app: deconz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deconz
+  template:
+    metadata:
+      labels:
+        app: deconz
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-deconz
+      - name: dev-ama1
+        hostPath:
+          path: /dev/ttyACM1
+      containers:
+      - name: deconz
+        image: deconzcommunity/deconz
+        imagePullPolicy: IfNotPresent
+#        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+          - containerPort: 433
+          - containerPort: 5900
+        env:
+          - name: TZ
+            value: Europe/London
+          - name: DECONZ_DEVICE
+            value: /dev/ttyACM1
+        volumeMounts:
+        - name: data-volume
+          mountPath: /opt/deCONZ
+        - name: dev-ama1
+          mountPath: /dev/ttyACM1
+        securityContext:
+          privileged: true
+      restartPolicy: Always
+      
