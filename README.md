@@ -18,7 +18,7 @@ In file /boot/cmdline.txt add cgroup_enable=cpuset cgroup_enable=memory cgroup_m
 curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
 ```
 
-# installation - NFS
+# installation - NFS for persistent storage
 
 Follow this tutorial to configure your pi as a NFS:
 https://pimylifeup.com/raspberry-pi-nfs/
