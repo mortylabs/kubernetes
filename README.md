@@ -64,4 +64,4 @@ Remeber to open ports 80 and 443 on your firewall / router, and redirect traffic
 
 # installation - applications
 
-for each app, deploy pv.yaml to create the persistent volume and then deployment.yaml. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
+for each app, deploy **pv.yaml** to create the persistent volume and then **deployment.yaml**. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
