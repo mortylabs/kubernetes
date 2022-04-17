@@ -1,7 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.22.5+k3s1** as of 10th March 2022. 
-
+Here you'll find the yaml manifests for my k3s homelab running **v1.22.7+k3s1** as of 17th April 2022. 
 To learn kubernetes, I wrote the yamls myself rather than blindly deploy helm charts that someone else has written. 
 
 All deployments are running on Rancher k3s with a MetalLB Load Balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard. The OS used is Raspbian **Bullseye 64 bit**.
