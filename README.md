@@ -1,6 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.22.7+k3s1** as of 17th April 2022. 
+Here you'll find the yaml manifests for my k3s homelab running **v1.24.4+k3s1** as of 2nd September.
 To learn kubernetes, I wrote the yamls myself rather than blindly deploy helm charts that someone else has written. 
 
 All deployments are running on Rancher k3s with a MetalLB Load Balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard. The OS used is Raspbian **Bullseye 64 bit**.
@@ -50,7 +50,7 @@ kubectl apply -f metallb-config.yaml
 
 # installation - enable https ingress using cert-manager & letsencrypt
 
-**cert-manager-arm.yaml** below will install cert-manager **v1.7.1**, which is the latest version as of 10th March 2022.
+**cert-manager-arm.yaml** below will install cert-manager **v1.9.1**, which is the latest version as of 10th March 2022.
 ```
 kubectl create namespace cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.7.1/cert-manager.yaml
