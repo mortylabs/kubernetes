@@ -42,11 +42,9 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 # installation - MetalLB Load Balancer
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
-vi metallb-config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
-kubectl apply -f metallb-config.yaml
+vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
+kubectl apply -f config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
