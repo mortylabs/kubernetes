@@ -49,11 +49,11 @@ kubectl apply -f config.yaml
 
 # installation - enable https ingress using cert-manager & letsencrypt
 
-Below will install cert-manager **v1.11.0**, which is the latest version as of 27th March 2023.
+Below will install cert-manager **v1.14.2**, which is the latest version as of 19th February 2024. 
 ```
 cd ingress
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.2/cert-manager.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
