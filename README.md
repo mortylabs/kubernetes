@@ -42,7 +42,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 # installation - MetalLB Load Balancer
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/config/manifests/metallb-native.yaml
 vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f config.yaml
 ```
