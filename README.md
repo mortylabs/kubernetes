@@ -1,6 +1,6 @@
 # kubernetes overview
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.28.6+k3s2** as of **19th Feb 2024**.
+Here you'll find the yaml manifests for my k3s homelab running **v1.29.3+k3s1** as of **22nd April 2024**.
 To learn kubernetes, I wrote the yamls myself rather than blindly deploy helm charts that someone else has written. 
 
 All deployments are running on Rancher k3s with a MetalLB Load Balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard. The OS used is Raspbian **Bullseye 64 bit**.
@@ -42,18 +42,18 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 # installation - MetalLB Load Balancer
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
 
-Below will install cert-manager **v1.14.2**, which is the latest version as of **19th February 2024.**
+Below will install cert-manager **v1.14.4**, which is the latest version as of **22nd April 2024.**
 ```
 cd ingress
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.2/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
