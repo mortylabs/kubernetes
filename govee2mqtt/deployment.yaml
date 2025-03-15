@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: govee2mqtt
+  name: govee2mqtt-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: govee2mqtt
+  template:
+    metadata:
+      labels:
+        app: govee2mqtt
+    spec:
+      containers:
+      - image: ghcr.io/wez/govee2mqtt:latest
+        name: govee2mqtt
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - name: "p8086"
+            containerPort: 8086
+        env:
+          - name: GOVEE_MQTT_HOST
+            value: "192.168.1.15"
+          - name: GOVEE_MQTT_PORT
+            value: "31883"
+          - name: GOVEE_MQTT_USER
+            value: "mqtt_user"
+          - name: GOVEE_MQTT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: govee
+                key: "mqtt-password"
+          - name: GOVEE_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: govee
+                key: govee-email
+          - name: GOVEE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: govee
+                key: govee-password
+          - name: GOVEE_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: govee
+                key: govee-api-key
+          - name: GOVEE_TEMPERATURE_SCALE
+            value: "C"
+          - name: RUST_LOG_STYLE
+            value: "always"
+          - name: TZ
+            value: "Europe/London"
+      restartPolicy: Always
