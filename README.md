@@ -1,8 +1,8 @@
 # Kubernetes K3s Home Lab
 
-This repository contains Kubernetes manifests (`.yaml`) for my personal K3s homelab setup, currently running version **`v1.31.6+k3s1`** (as of **14 March 2025**).  
+This repository contains Kubernetes manifests for my personal K3s homelab, currently running version **`v1.31.6+k3s1`**, as of **14 March 2025**.  
 
-To better understand Kubernetes concepts, I've written all deployment YAML files myself instead of relying solely on third-party Helm charts.
+To better understand Kubernetes concepts, I've written all deployment `.yaml` files myself instead of relying solely on third-party Helm charts.
 
 ## 🚀 **Cluster Overview**
 
@@ -15,11 +15,9 @@ To better understand Kubernetes concepts, I've written all deployment YAML files
   - Persistent storage via dedicated Raspberry Pi NFS server (SSD-based, 500GB)
   - Automatic backups to [Google Drive](https://drive.google.com/) and [GitHub](https://github.com)
 
+Feel free to explore, reuse, or adapt this repo for your own Kubernetes learning journey!
 
 ---
-
-Feel free to explore, reuse, or adapt this repository for your own Kubernetes learning journey!
-
 
 # installation - k3s
 
