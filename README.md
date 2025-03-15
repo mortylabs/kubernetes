@@ -1,12 +1,24 @@
-# kubernetes overview
+# Kubernetes K3s Home Lab
 
-Here you'll find the yaml manifests for my k3s homelab running **v1.31.6+k3s1** as of **14th March 2025**.
-To learn kubernetes, I wrote the yamls myself rather than blindly deploy helm charts that someone else has written. 
+This repository contains Kubernetes manifests (`.yaml`) for my personal K3s homelab setup, currently running version **`v1.31.6+k3s1`** (as of **14 March 2025**).  
 
-All deployments are running on Rancher k3s with a MetalLB Load Balancer and NGINX reverse proxy replacing Traefik. Hardware comprises Raspberry Pi 4Bs (8GB RAM), and SSD drives replacing the sdcard. The OS used is Raspbian **Bullseye 64 bit**.
+To better understand Kubernetes concepts, I've written all deployment YAML files myself instead of relying solely on third-party Helm charts.
 
-For persistent storage, a Network File Server (NFS) is used. You could use your Synology Raid Controller, however my NFS server is simply a raspberry pi with an 500GB SSD drive replacing the SD Card, and automatic backups to GDrive and also github. A lot cheaper and very adequate. 
+## 🚀 **Cluster Overview**
 
+- **Kubernetes Distribution:** [Rancher K3s](https://k3s.io/)
+- **Load Balancer:** [MetalLB](https://metallb.universe.tf/)
+- **Ingress/Reverse Proxy:** [NGINX](https://kubernetes.github.io/ingress-nginx/) (replacing the default Traefik ingress controller)
+- **Nodes:** Raspberry Pi 4 Model B (ARM64, 8GB RAM)
+- **Operating System:** Raspbian Bullseye 64-bit
+- **Storage and Backups:**
+  - Persistent storage via dedicated Raspberry Pi NFS server (SSD-based, 500GB)
+  - Automatic backups to [Google Drive](https://drive.google.com/) and [GitHub](https://github.com)
+
+
+---
+
+Feel free to explore, reuse, or adapt this repository for your own Kubernetes learning journey!
 
 
 # installation - k3s
