@@ -22,9 +22,6 @@ spec:
       - name: music-volume
         hostPath:
           path: /home/pi/Music
-#      - name: python-volume
-#        hostPath:
-#          path: /home/pi/python
       - name: dev-usb0
         hostPath:
           path: /dev/ttyACM0
@@ -45,8 +42,6 @@ spec:
         volumeMounts:
         - name: music-volume
           mountPath: /config/www/media
-#        - name: python-volume
-#          mountPath: /home/pi/python
         - name: data-volume
           mountPath: /config
         - name: dev-usb0
@@ -55,6 +50,20 @@ spec:
           mountPath: "/dev/ttyAMA0"
 #        - name: dev-snd
 #          mountPath: "/dev/snd" 
+        livenessProbe:
+            tcpSocket:
+              port: 8123
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 6
+            timeoutSeconds: 10
+        readinessProbe:
+            tcpSocket:
+              port: 8123
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5
+            timeoutSeconds: 10
         securityContext:
           privileged: true
       restartPolicy: Always
