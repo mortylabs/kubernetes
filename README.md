@@ -1,4 +1,4 @@
-# 🧠 MortyLabs Kubernetes K3s Homelab
+# MortyLabs Kubernetes K3s Homelab
 
 > A lightweight K3s-based Kubernetes cluster, currently running version **`v1.31.6+k3s1`** as of **14 March 2025**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
 
