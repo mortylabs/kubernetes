@@ -1,9 +1,19 @@
-# Kubernetes K3s Home Lab
+# 🧠 MortyLabs Kubernetes K3s Homelab
 
-This repository contains Kubernetes manifests for my personal K3s homelab, currently running version **`v1.31.6+k3s1`**, as of **14 March 2025**.  
+> A lightweight K3s-based Kubernetes cluster, currently running version **`v1.31.6+k3s1`** as of **14 March 2025**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
 
-To better understand Kubernetes concepts, I've written all deployment `.yaml` files myself instead of relying solely on third-party Helm charts.
+[![K3s](https://img.shields.io/badge/K3s-v1.31.6--k3s1-blue.svg)]()
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)]()
 
+## 🤔Why This Repo Exists
+
+To better understand Kubernetes concepts, I wrote all deployment `.yaml` files myself from scratch, instead of relying solely on third-party Helm charts, for a simple stack:
+
+- fully orchestrated Kubernetes stack built for **Raspberry Pi**
+- Ideal for self-hosted services: Home Assistant, databases, dashboards, network management, etc.
+- Modular and portable—spin up the same stack at home, office, or remote sites
+
+---
 ## 🚀 **Cluster Overview**
 
 - **Kubernetes Distribution:** [Rancher K3s](https://k3s.io/)
