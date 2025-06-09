@@ -62,18 +62,18 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 # installation - MetalLB Load Balancer
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
 vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
 
-Below will install cert-manager **v1.17.0**, which is the latest version as of **14th March 2025.**
+Below will install cert-manager **v1.17.2**, which is the latest version as of **9th June 2025.**
 ```
 cd ingress
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.0/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
@@ -82,4 +82,4 @@ Remeber to open ports 80 and 443 on your firewall / router, and redirect traffic
 
 # installation - applications
 
-for each app, deploy **pv.yaml** to create the persistent volume and then **deployment.yaml**. Remember to edit pv.yaml and enter your NFS IP address and folder. That's it :) 
+for each container app, deploy **pv.yaml** to create the persistent volume and then **deployment.yaml** and **svc.yaml**. Remember to edit **pv.yaml** and enter your **NFS IP address** and folder. That's it :) 
