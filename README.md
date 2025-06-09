@@ -7,7 +7,7 @@
 
 ## 🤔Why This Repo Exists
 
-To better understand Kubernetes concepts, I wrote all deployment `.yaml` files myself from scratch, instead of relying solely on third-party Helm charts, for a simple stack:
+To better understand Kubernetes concepts, I wrote all deployment `.yaml` files myself from scratch, instead of relying solely on third-party Helm charts:
 
 - fully orchestrated Kubernetes stack built for **Raspberry Pi**
 - Ideal for self-hosted services: Home Assistant, databases, dashboards, network management, etc.
