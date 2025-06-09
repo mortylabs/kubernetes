@@ -2,7 +2,7 @@
 
 > A lightweight K3s-based Kubernetes cluster, currently running version **`v1.32.5+k3s1`** as of **9 June March 2025**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
 
-[![K3s](https://img.shields.io/badge/K3s-v1.31.6--k3s1-blue.svg)]()
+[![K3s](https://img.shields.io/badge/K3s-v1.32.5--k3s1-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)]()
 
 ## 🤔Why This Repo Exists
