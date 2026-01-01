@@ -1,6 +1,6 @@
 # Kubernetes K3s Homelab
 
-> A lightweight K3s-based Kubernetes cluster, currently running version **`v1.32.5+k3s1`** as of **9 June March 2025**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
+> A lightweight K3s-based Kubernetes cluster, currently running version **` v1.33.6+k3s1`** as of **1st January 2026**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
 
 [![K3s](https://img.shields.io/badge/K3s-v1.32.5--k3s1-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)]()
@@ -62,18 +62,18 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 # installation - MetalLB Load Balancer
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/manifests/metallb-native.yaml
 vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
 kubectl apply -f config.yaml
 ```
 
 # installation - enable https ingress using cert-manager & letsencrypt
 
-Below will install cert-manager **v1.17.2**, which is the latest version as of **9th June 2025.**
+Below will install cert-manager **v1.19.2**, which is the latest version as of **1st January 2026.**
 ```
 cd ingress
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.2/cert-manager.yaml
 vi letsencrypt.yaml #update the email address!
 kubectl apply -f letsencrypt.yaml
 ```
