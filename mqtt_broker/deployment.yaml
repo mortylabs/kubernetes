@@ -32,15 +32,20 @@ spec:
           - containerPort: 9001
         volumeMounts:
           - name: config-file
-            mountPath: /mosquitto/config
+            mountPath: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+          - name: config-file
+            mountPath: /mosquitto/config/mosquitto.passwd
+            subPath: mosquitto.passwd
           - name: data-volume
             mountPath: /mosquitto/data
+        
       restartPolicy: Always
       securityContext:
         runAsNonRoot: true
         fsGroup: 1883
         runAsGroup: 1883
-        runAsUser: 1833
+        runAsUser: 1883
       volumes:
         - name: data-volume
           persistentVolumeClaim:
@@ -48,3 +53,5 @@ spec:
         - name: config-file
           configMap:
             name: cm-mosquitto-conf 
+            defaultMode: 0600    # Only the owner (1883) can read/write
+
