@@ -1,6 +1,6 @@
 # Kubernetes K3s Homelab
 
-> A lightweight K3s-based Kubernetes cluster, currently running version **` v1.33.6+k3s1`** as of **1st January 2026**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
+> A lightweight K3s-based Kubernetes cluster, currently running version **` v1.34.4+k3s1 `** as of **25th February 2026**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
 
 [![K3s](https://img.shields.io/badge/K3s-v1.32.5--k3s1-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)]()
