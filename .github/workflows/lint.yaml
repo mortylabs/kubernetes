@@ -1,0 +1,6 @@
+# .github/workflows/lint.yaml
+- uses: actions/checkout@v4
+- run: |
+    curl -sLO https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+    tar xf kubeconform-linux-amd64.tar.gz
+    find . -name '*.yaml' | xargs ./kubeconform -strict -ignore-missing-schemas
