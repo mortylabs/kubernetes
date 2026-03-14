@@ -1,5 +1,3 @@
-# replace 192.168.1.15 with the IP address of your MetalLB target localhost (or master node if not using MetalLB load balancer)
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,9 +12,6 @@ spec:
   selector:
     app: influxdb
   type: LoadBalancer
-  type: NodePort
-  externalIPs:
-    - "192.168.1.15"
 
 ---
 apiVersion: apps/v1
@@ -36,16 +31,15 @@ spec:
         app: influxdb
     spec:
       containers:
-      - image: docker.io/arm32v7/influxdb
+      - image: docker.io/arm64v8/influxdb:2
         imagePullPolicy: IfNotPresent
         name: influxdb
         ports:
         - containerPort: 8086
         volumeMounts:
         - name: var-lib-influxdb
-          mountPath: /var/lib/influxdb
+          mountPath: /var/lib/influxdb2
       volumes:
       - name: var-lib-influxdb
         persistentVolumeClaim:
           claimName: pvc-influxdb
-
