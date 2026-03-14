@@ -12,7 +12,6 @@ spec:
   selector:
     app: influxdb
   type: LoadBalancer
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,14 +30,14 @@ spec:
         app: influxdb
     spec:
       containers:
-      - image: docker.io/arm64v8/influxdb:2
-        imagePullPolicy: IfNotPresent
+      - image: docker.io/arm32v7/influxdb
+        imagePullPolicy: Always
         name: influxdb
         ports:
         - containerPort: 8086
         volumeMounts:
         - name: var-lib-influxdb
-          mountPath: /var/lib/influxdb2
+          mountPath: /var/lib/influxdb
       volumes:
       - name: var-lib-influxdb
         persistentVolumeClaim:
