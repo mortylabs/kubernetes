@@ -1,6 +1,29 @@
-# .github/workflows/lint.yaml
-- uses: actions/checkout@v4
-- run: |
-    curl -sLO https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
-    tar xf kubeconform-linux-amd64.tar.gz
-    find . -name '*.yaml' | xargs ./kubeconform -strict -ignore-missing-schemas
+name: Lint Kubernetes Manifests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  kubeconform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz \
+            | tar xz -C /usr/local/bin kubeconform
+          kubeconform -v
+
+      - name: Lint manifests
+        run: |
+          find . -name '*.yaml' \
+            ! -path './.github/*' \
+            | xargs kubeconform \
+              -strict \
+              -ignore-missing-schemas \
+              -kubernetes-version 1.32.0 \
+              -summary
