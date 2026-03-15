@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+      - name: pihole
+        image: pihole/pihole:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: "Europe/London"
+        - name: WEBPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pihole-pass
+              key: password
+        volumeMounts:
+        - name: data-volume
+          mountPath: /etc/pihole
+          subPath: etc_pihole
+        - name: data-volume
+          mountPath: /etc/dnsmasq.d
+          subPath: etc_dnsmasq.d
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-pihole
