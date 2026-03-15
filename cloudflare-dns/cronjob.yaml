@@ -1,0 +1,40 @@
+# Cloudflare DDNS — updates DNS A records with your current public IP every 20 minutes
+#
+# To find your Zone ID and DNS Record IDs:
+#   Zone ID:   Cloudflare dashboard → your domain → Overview → API section
+#   Record ID: curl https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/dns_records \
+#                   -H "Authorization: Bearer <API_TOKEN>"
+#
+# Add one container per DNS record you want to keep updated
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ddns-cloudflare
+spec:
+  schedule: "*/20 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mortylabs-com
+            image: docker.io/curlimages/curl:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: CLOUDFLARE_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ddns-secret-cloudflare-api-token
+                  key: CLOUDFLARE_API_TOKEN
+            command:
+            - /bin/sh
+            - -c
+            - |
+              curl -s -X PATCH \
+                -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data '{"content":"'"$(curl -s https://api.ipify.org)"'","name":"mortylabs.com","type":"A"}' \
+                https://api.cloudflare.com/client/v4/zones/CHANGEME_ZONE_ID/dns_records/CHANGEME_RECORD_ID
+          restartPolicy: OnFailure
