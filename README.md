@@ -1,52 +1,80 @@
-# Kubernetes K3s Homelab
+# 🏠 Morty Labs — K3s Homelab
 
-> A lightweight K3s-based Kubernetes cluster, currently running version **` v1.34.4+k3s1 `** as of **25th February 2026**, which is tailored for my personal homelab that hosts `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `MongoDB`, `Wordpress`, and more.
+> A lightweight K3s-based Kubernetes cluster, currently running version **`v1.34.4+k3s1`** as of **25th February 2026**, tailored for a personal homelab hosting `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `Pi-hole`, `deCONZ`, and more.
 
-[![K3s](https://img.shields.io/badge/K3s-v1.32.5--k3s1-blue.svg)]()
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)]()
+[![K3s](https://img.shields.io/badge/K3s-v1.34.4%2Bk3s1-blue?logo=kubernetes)](https://k3s.io/)
+[![cert-manager](https://img.shields.io/badge/cert--manager-v1.19.4-green?logo=letsencrypt)](https://cert-manager.io/)
+[![MetalLB](https://img.shields.io/badge/MetalLB-v0.15.3-blue)](https://metallb.universe.tf/)
+[![ingress-nginx](https://img.shields.io/badge/ingress--nginx-v1.12.0-brightgreen?logo=nginx)](https://kubernetes.github.io/ingress-nginx/)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/mortylabs/kubernetes?style=social)](https://github.com/mortylabs/kubernetes/stargazers)
 
-## 🤔Why This Repo Exists
+## 🤔 Why This Repo Exists
 
-To better understand Kubernetes concepts, I wrote all deployment `.yaml` files myself from scratch, instead of relying solely on third-party Helm charts:
+To better understand Kubernetes concepts, I wrote all deployment `.yaml` files myself from scratch, instead of relying on third-party Helm charts:
 
-- fully orchestrated Kubernetes stack built for **Raspberry Pi**
-- Ideal for self-hosted services: Home Assistant, databases, dashboards, network management, etc.
-- Modular and portable—spin up the same stack at home, office, or remote sites
+- Fully orchestrated Kubernetes stack built for **Raspberry Pi**
+- Ideal for self-hosted services: Home Assistant, databases, dashboards, network management, and more
+- Modular and portable — spin up the same stack at home or at a remote site
+- Secure by default — TLS everywhere, Cloudflare WAF in front, fail2ban on the nodes
 
 ---
-## 🚀 **Cluster Overview**
+
+## 🚀 Cluster Overview
 
 - **Kubernetes Distribution:** [Rancher K3s](https://k3s.io/)
-- **Load Balancer:** [MetalLB](https://metallb.universe.tf/)
-- **Ingress/Reverse Proxy:** [NGINX](https://kubernetes.github.io/ingress-nginx/) (replacing the default Traefik ingress controller)
-- **Nodes:** Raspberry Pi 4 Model B (ARM64, 8GB RAM)
-- **Operating System:** Raspbian Bullseye 64-bit
-- **Storage and Backups:**
-  - Persistent storage via dedicated Raspberry Pi NFS server (SSD-based, 500GB)
-  - Automatic backups to [Google Drive](https://drive.google.com/) and [GitHub](https://github.com)
+- **Load Balancer:** [MetalLB](https://metallb.universe.tf/) v0.15.3
+- **Ingress/Reverse Proxy:** [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) v1.12.0 (replacing the default Traefik)
+- **TLS:** [cert-manager](https://cert-manager.io/) v1.19.4 + Let's Encrypt
+- **DNS/CDN:** [Cloudflare](https://cloudflare.com) (proxy + WAF + DDNS)
+- **Nodes:** Raspberry Pi 4 Model B — ARM64, 8GB RAM
+- **Operating System:** Raspberry Pi OS (Bookworm) 64-bit
+- **Storage:** Dedicated Raspberry Pi NFS server (SSD-based, 500GB)
+- **Backups:** Automatic backups to Google Drive and GitHub
 
 Feel free to explore, reuse, or adapt this repo for your own Kubernetes learning journey!
 
 ---
 
-# installation - k3s
+## 📦 Deployed Services
 
-In file /boot/cmdline.txt add the following to the end of the file:
+- [`home-assistant`](home-assistant/) — Core home automation hub
+- [`influxdb`](influxdb/) — Time-series metrics storage
+- [`grafana`](grafana/) — Metrics dashboards
+- [`mqtt_broker`](mqtt_broker/) — Mosquitto MQTT broker
+- [`mqtt2influx`](mqtt2influx/) — MQTT → InfluxDB bridge
+- [`govee2mqtt`](govee2mqtt/) — Govee BLE lights → MQTT
+- [`deconz`](deconz/) — Zigbee gateway (ConBee II)
+- [`pihole`](pihole/) — Network-wide ad/DNS blocking
+- [`unifi`](unifi/) — Ubiquiti UniFi Controller
+- [`cloudflare-dns`](cloudflare-dns/) — Cloudflare DDNS CronJob
+- [`ingress`](ingress/) — ingress-nginx + cert-manager ClusterIssuer
+- [`metallb`](metallb/) — Bare-metal load balancer config
+- [`pv_nfs`](pv_nfs/) — NFS persistent volume provisioner
+- [`wordpress`](wordpress/) — WordPress + MariaDB (retained as reference, not actively deployed)
+
+---
+
+## 🛠 Installation — k3s
+
+Edit `/boot/firmware/cmdline.txt` (Bookworm) or `/boot/cmdline.txt` (Bullseye) and append to the **single existing line**:
 ```
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
 
-Then to install k3s with the default load balancer disabled:
+Then install k3s with Traefik and the built-in service LB disabled:
 ```
-curl -sfL https://get.k3s.io | sh -s -  --disable=traefik --disable servicelb --write-kubeconfig-mode 644
+curl -sfL https://get.k3s.io | sh -s - --disable=traefik --disable=servicelb --write-kubeconfig-mode 644
 ```
 
-# installation - NFS for persistent storage
+---
 
-Follow this tutorial to configure your pi as a NFS:
+## 🛠 Installation — NFS Persistent Storage
+
+Follow this tutorial to configure your Pi as an NFS server:
 https://pimylifeup.com/raspberry-pi-nfs/
 
-Then to setup the nfs-client-provisioner in k3s:
+Then deploy the NFS provisioner in k3s:
 ```
 cd pv_nfs
 kubectl apply -f class.yaml
@@ -54,32 +82,75 @@ kubectl apply -f rbac.yaml
 kubectl apply -f deployment.yaml
 ```
 
-# installation - NGINX Ingress
+---
+
+## 🛠 Installation — NGINX Ingress
 ```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/cloud/deploy.yaml
 ```
 
-# installation - MetalLB Load Balancer
+---
+
+## 🛠 Installation — MetalLB Load Balancer
 ```
 cd metallb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/manifests/metallb-native.yaml
-vi config.yaml  #edit and set the IP address range that has been reserved on your DCHP server
+vi config.yaml  # edit and set the IP address range reserved on your DHCP server
 kubectl apply -f config.yaml
 ```
 
-# installation - enable https ingress using cert-manager & letsencrypt
+---
 
-Below will install cert-manager **v1.19.4**, which is the latest version as of **25th February 2026.**
+## 🛠 Installation — HTTPS Ingress via cert-manager & Let's Encrypt
+
+Below will install cert-manager **v1.19.4**, which is the latest version as of **25th February 2026**.
 ```
 cd ingress
 kubectl create namespace cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.4/cert-manager.yaml
-vi letsencrypt.yaml #update the email address!
+vi letsencrypt.yaml  # update your email address
 kubectl apply -f letsencrypt.yaml
 ```
 
-Remeber to open ports 80 and 443 on your firewall / router, and redirect traffic to the master node ingress ip from metallb load balancer. In this example it would be 192.168.1.110. So direct port traffic from both 80 and 443 to 192.168.1.110 respectively.
+Remember to open ports 80 and 443 on your router and forward traffic to the MetalLB ingress IP.
 
-# installation - applications
+---
 
-for each container app, deploy **pv.yaml** to create the persistent volume and then **deployment.yaml** and **svc.yaml**. Remember to edit **pv.yaml** and enter your **NFS IP address** and folder. That's it :) 
+## 🛠 Installation — Applications
+
+For each app, edit `pv.yaml` to set your NFS server IP and path, edit `secrets.yaml` to set credentials, then:
+```
+kubectl apply -f pv.yaml
+kubectl apply -f secrets.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f svc.yaml
+kubectl apply -f ingress.yaml  # if applicable
+```
+
+See each app's `README.md` for specific instructions.
+
+---
+
+## 🔐 Secrets Management
+
+Each app has a `secrets.yaml` file excluded from git via `.gitignore`. Never commit real credentials. See each app folder for the specific secrets required.
+
+---
+
+## ☁️ Cloudflare DNS
+
+All services are exposed via Cloudflare-proxied subdomains. DNS records are kept in sync automatically via the [`cloudflare-dns`](cloudflare-dns/) CronJob which runs every 20 minutes.
+
+---
+
+## ⬆️ Upgrading k3s
+```
+curl -sfL https://get.k3s.io | sh -s - --disable=traefik --disable=servicelb --write-kubeconfig-mode 644
+kubectl get nodes
+```
+
+Always check the [k3s release notes](https://github.com/k3s-io/k3s/releases) before upgrading.
+
+---
+
+Built with ☕ and mild obsession 🏴󠁧󠁢󠁳󠁣󠁴󠁿
