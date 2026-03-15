@@ -17,7 +17,6 @@ spec:
         app: room-assistant
     spec:
       hostNetwork: true
-      restartPolicy: Always
       containers:
       - name: room-assistant
         image: mkerix/room-assistant:latest
