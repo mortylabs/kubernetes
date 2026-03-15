@@ -8,6 +8,13 @@
 [![ingress-nginx](https://img.shields.io/badge/ingress--nginx-v1.12.0-brightgreen?logo=nginx)](https://kubernetes.github.io/ingress-nginx/)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/mortylabs/kubernetes?style=social)](https://github.com/mortylabs/kubernetes/stargazers)
+[![CI](https://github.com/mortylabs/kubernetes/actions/workflows/lint.yaml/badge.svg)](https://github.com/mortylabs/kubernetes/actions/workflows/lint.yaml)
+
+![Raspberry Pi](https://img.shields.io/badge/hardware-Raspberry%20Pi%204-red?logo=raspberry-pi)
+![ARM64](https://img.shields.io/badge/arch-ARM64-lightgrey)
+![Cloudflare](https://img.shields.io/badge/DNS-Cloudflare-orange?logo=cloudflare)
+
+---
 
 ## 🤔 Why This Repo Exists
 
@@ -17,6 +24,29 @@ To better understand Kubernetes concepts, I wrote all deployment `.yaml` files m
 - Ideal for self-hosted services: Home Assistant, databases, dashboards, network management, and more
 - Modular and portable — spin up the same stack at home or at a remote site
 - Secure by default — TLS everywhere, Cloudflare WAF in front, fail2ban on the nodes
+
+---
+
+## 👤 Who Is This For?
+
+- Raspberry Pi enthusiasts wanting to run a production-grade homelab or website
+- Home Assistant users who want persistent storage, TLS, and proper ingress
+- Anyone learning Kubernetes who wants real working manifests, not toy examples
+- DevOps engineers setting up a low-cost remote monitoring stack
+
+---
+
+## 🎯 What You'll End Up With
+
+A fully working homelab cluster with:
+
+- 🏡 Home Assistant accessible at `https://ha.yourdomain.com`
+- 📊 Grafana dashboards at `https://grafana.yourdomain.com`
+- 🔒 Automatic TLS certificates via Let's Encrypt
+- 📡 MQTT broker for all your IoT sensors
+- 🕳️ Network-wide ad blocking via Pi-hole
+- ☁️ Automatic DNS updates when your home IP changes
+- 💾 All data persisted on NFS — survives pod restarts and reboots
 
 ---
 
@@ -51,7 +81,7 @@ Feel free to explore, reuse, or adapt this repo for your own Kubernetes learning
 - [`ingress`](ingress/) — ingress-nginx + cert-manager ClusterIssuer
 - [`metallb`](metallb/) — Bare-metal load balancer config
 - [`pv_nfs`](pv_nfs/) — NFS persistent volume provisioner
-- [`wordpress`](wordpress/) — WordPress + MariaDB (retained as reference, not actively deployed)
+- [`wordpress`](wordpress/) — WordPress + MariaDB
 
 ---
 
