@@ -1,0 +1,22 @@
+# To generate a new password hash:
+#   docker run -it eclipse-mosquitto /bin/sh
+#   mosquitto_passwd -c /tmp/mosquitto.passwd mqtt_user
+#   cat /tmp/mosquitto.passwd
+# Then paste the generated hash below in place of CHANGEME_PASSWORD_HASH
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-mosquitto-conf
+  labels:
+    app: mqtt
+data:
+  mosquitto.conf: |
+    listener 1883
+    persistence true
+    persistence_location /mosquitto/data
+    persistence_file mosquitto.db
+    autosave_interval 60
+    password_file /mosquitto/config/mosquitto.passwd
+    allow_anonymous false
+  mosquitto.passwd: |
+    mqtt_user:CHANGEME_PASSWORD_HASH
