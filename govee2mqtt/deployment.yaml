@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: govee2mqtt
-  name: govee2mqtt-deployment
+  name: govee2mqtt
 spec:
   replicas: 1
   selector:
@@ -17,24 +17,24 @@ spec:
       containers:
       - image: ghcr.io/wez/govee2mqtt:latest
         name: govee2mqtt
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         ports:
-          - name: "p8086"
-            containerPort: 8086
+          - name: govee-http
+            containerPort: 8056
         env:
           - name: GOVEE_MQTT_HOST
-            value: "192.168.1.15"
+            value: "192.168.1.15"    # ← replace with your MQTT broker IP
           - name: GOVEE_MQTT_PORT
-            value: "31883"
+            value: "31883"            # ← replace with your MQTT broker port (default: 1883)
           - name: GOVEE_MQTT_USER
-            value: "mqtt_user"
+            value: "mqtt_user"       # ← replace with your MQTT username
           - name: GOVEE_MQTT_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: govee
-                key: "mqtt-password"
+                key: mqtt-password
           - name: GOVEE_EMAIL
             valueFrom:
               secretKeyRef:
@@ -56,4 +56,3 @@ spec:
             value: "always"
           - name: TZ
             value: "Europe/London"
-      restartPolicy: Always
