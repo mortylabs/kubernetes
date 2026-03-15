@@ -1,6 +1,6 @@
 # 🏠 Morty Labs — K3s Homelab
 
-> A lightweight K3s-based Kubernetes cluster built by **Andrew Morty**, currently running version **`v1.34.4+k3s1`** as of **25th February 2026**, tailored for a personal homelab hosting `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `Pi-hole`, `deCONZ`, and more.
+> A lightweight K3s-based Kubernetes cluster, currently running version **`v1.34.4+k3s1`** as of **25th February 2026**, tailored for a personal homelab hosting `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `Pi-hole`, `deCONZ`, and more.
 
 [![K3s](https://img.shields.io/badge/K3s-v1.34.4%2Bk3s1-blue?logo=kubernetes)](https://k3s.io/)
 [![cert-manager](https://img.shields.io/badge/cert--manager-v1.19.4-green?logo=letsencrypt)](https://cert-manager.io/)
