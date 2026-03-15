@@ -14,10 +14,11 @@ spec:
       labels:
         app: govee2mqtt
     spec:
-      containers:
+       hostNetwork: true
+       containers:
       - image: ghcr.io/wez/govee2mqtt:latest
         name: govee2mqtt
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         securityContext:
           privileged: true
         ports:
