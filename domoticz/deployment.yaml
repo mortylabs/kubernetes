@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domoticz
+  labels:
+    app: domoticz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domoticz
+  template:
+    metadata:
+      labels:
+        app: domoticz
+    spec:
+      containers:
+      - name: domoticz
+        image: demydiuk/domoticz
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            name: domoticz-http
+        livenessProbe:
+          tcpSocket:
+            port: domoticz-http
+          initialDelaySeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /#/Dashboard
+            port: domoticz-http
+          initialDelaySeconds: 3
+        volumeMounts:
+        - name: data-volume
+          mountPath: /config
+          subPath: config
+        - name: data-volume
+          mountPath: /opt/domoticz/scripts/lua
+          subPath: lua
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: pvc-domoticz
