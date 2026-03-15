@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: mqtt
-  name: mqtt-deployment
+  name: mqtt
 spec:
   replicas: 1
   selector:
@@ -14,19 +14,15 @@ spec:
       labels:
         app: mqtt
     spec:
-#      initContainers:
-#      - name: volume-mount-hack
-#        image: busybox
-#        imagePullPolicy: IfNotPresent
-##        command: ["sh", "-c", "chown -R 1883:1883 /mosquitto"]
-#        command: ["sh", "-c", "sleep 1"]
-##        volumeMounts:
-##        - name: data-volume
-##          mountPath: /mosquitto/data/mosquitto.db
+      securityContext:
+        runAsNonRoot: true
+        fsGroup: 1883
+        runAsGroup: 1883
+        runAsUser: 1883
       containers:
       - image: eclipse-mosquitto
         name: mqtt
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
           - containerPort: 1883
           - containerPort: 9001
@@ -39,19 +35,11 @@ spec:
             subPath: mosquitto.passwd
           - name: data-volume
             mountPath: /mosquitto/data
-        
-      restartPolicy: Always
-      securityContext:
-        runAsNonRoot: true
-        fsGroup: 1883
-        runAsGroup: 1883
-        runAsUser: 1883
       volumes:
         - name: data-volume
           persistentVolumeClaim:
             claimName: pvc-mqtt
         - name: config-file
           configMap:
-            name: cm-mosquitto-conf 
-            defaultMode: 0600    # Only the owner (1883) can read/write
-
+            name: cm-mosquitto-conf
+            defaultMode: 0600
