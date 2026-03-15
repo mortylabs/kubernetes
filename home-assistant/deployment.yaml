@@ -15,6 +15,44 @@ spec:
         app: home-assistant
     spec:
       hostNetwork: true
+      initContainers:
+      - name: wait-for-mqtt
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mqtt 1883; do echo waiting for mqtt; sleep 2; done']
+      containers:
+      - name: home-assistant
+        image: ghcr.io/home-assistant/home-assistant:stable
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 8123
+        livenessProbe:
+          tcpSocket:
+            port: 8123
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 6
+          timeoutSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8123
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          failureThreshold: 5
+          timeoutSeconds: 10
+        volumeMounts:
+        - name: data-volume
+          mountPath: /config
+        - name: music-volume
+          mountPath: /config/www/media
+        - name: dev-usb0
+          mountPath: /dev/ttyACM0
+        - name: dev-ama0
+          mountPath: /dev/ttyAMA0
+        - name: tz-config
+          mountPath: /etc/localtime
+          readOnly: true
       volumes:
       - name: data-volume
         persistentVolumeClaim:
@@ -28,43 +66,6 @@ spec:
       - name: dev-ama0
         hostPath:
           path: /dev/ttyAMA0
-#      - name: dev-snd
-#        hostPath:
-#          path: /dev/snd
-      containers:
-      - name: home-assistant
-        image: homeassistant/raspberrypi4-homeassistant:stable
-#        imagePullPolicy: IfNotPresent
-        imagePullPolicy: Always
-#        env:
-#          - name: TZ
-#            value: Europe/London
-        volumeMounts:
-        - name: music-volume
-          mountPath: /config/www/media
-        - name: data-volume
-          mountPath: /config
-        - name: dev-usb0
-          mountPath: "/dev/ttyACM0"
-        - name: dev-ama0
-          mountPath: "/dev/ttyAMA0"
-#        - name: dev-snd
-#          mountPath: "/dev/snd" 
-        livenessProbe:
-            tcpSocket:
-              port: 8123
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            failureThreshold: 6
-            timeoutSeconds: 10
-        readinessProbe:
-            tcpSocket:
-              port: 8123
-            initialDelaySeconds: 30
-            periodSeconds: 15
-            failureThreshold: 5
-            timeoutSeconds: 10
-        securityContext:
-          privileged: true
-      restartPolicy: Always
-      
+      - name: tz-config
+        hostPath:
+          path: /etc/localtime
