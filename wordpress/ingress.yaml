@@ -1,7 +1,8 @@
+# replace mortylabs.com and andrewmorty.com with your own domains
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mysite-wordpress-ingress
+  name: wordpress-ingress
   namespace: wordpress
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -9,11 +10,12 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
-    - secretName: mysite-tls
+    - secretName: wordpress-tls
       hosts:
-        - uk.YOURDOMAIN.com
+        - mortylabs.com
+        
   rules:
-  - host: uk.YOURDOMAIN.com
+  - host: mortylabs.com
     http:
       paths:
         - path: /
