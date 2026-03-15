@@ -1,6 +1,5 @@
-# replace  192.168.1.15 with the fixed IP of your NFS server
-# replace  /home/pi/nfs/k8sdata with the path to your NFS server folder
-
+# replace 192.168.1.15 with the fixed IP of your NFS server
+# replace /home/pi/nfs/k8sdata with the path to your NFS server folder
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -10,7 +9,7 @@ spec:
   capacity:
     storage: 300M
   accessModes:
-    - ReadWriteOnce    #volume can be mounted as RW by single node
+    - ReadWriteOnce
   nfs:
     path: /home/pi/nfs/k8sdata/wordpress
     server: 192.168.1.15
@@ -18,14 +17,13 @@ spec:
   claimRef:
     namespace: wordpress
     name: pvc-wordpress
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-wordpress
   namespace: wordpress
-  labels:   
+  labels:
     app: wordpress
 spec:
   accessModes:
@@ -33,4 +31,3 @@ spec:
   resources:
     requests:
       storage: 300M
-
