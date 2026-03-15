@@ -14,8 +14,8 @@ spec:
       labels:
         app: govee2mqtt
     spec:
-       hostNetwork: true
-       containers:
+        hostNetwork: true
+        containers:
       - image: ghcr.io/wez/govee2mqtt:latest
         name: govee2mqtt
         imagePullPolicy: Always
