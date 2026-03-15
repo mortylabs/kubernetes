@@ -14,8 +14,8 @@ spec:
       labels:
         app: govee2mqtt
     spec:
-        hostNetwork: true
-        containers:
+      hostNetwork: true
+      containers:
       - image: ghcr.io/wez/govee2mqtt:latest
         name: govee2mqtt
         imagePullPolicy: Always
@@ -26,11 +26,11 @@ spec:
             containerPort: 8056
         env:
           - name: GOVEE_MQTT_HOST
-            value: "192.168.1.15"    # ← replace with your MQTT broker IP
+            value: "192.168.1.15"
           - name: GOVEE_MQTT_PORT
-            value: "31883"            # ← replace with your MQTT broker port (default: 1883)
+            value: "1883"
           - name: GOVEE_MQTT_USER
-            value: "mqtt_user"       # ← replace with your MQTT username
+            value: "mqtt_user"
           - name: GOVEE_MQTT_PASSWORD
             valueFrom:
               secretKeyRef:
