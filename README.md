@@ -89,11 +89,13 @@ Feel free to explore, reuse, or adapt this repo for your own Kubernetes learning
 ## 🛠 Installation — k3s
 
 Edit `/boot/firmware/cmdline.txt` (Bookworm) or `/boot/cmdline.txt` (Bullseye) and append to the **single existing line**:
+
 ```
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
 
 Then install k3s with Traefik and the built-in service LB disabled:
+
 ```
 curl -sfL https://get.k3s.io | sh -s - --disable=traefik --disable=servicelb --write-kubeconfig-mode 644
 ```
@@ -106,6 +108,7 @@ Follow this tutorial to configure your Pi as an NFS server:
 https://pimylifeup.com/raspberry-pi-nfs/
 
 Then deploy the NFS provisioner in k3s:
+
 ```
 cd pv_nfs
 kubectl apply -f class.yaml
@@ -116,6 +119,7 @@ kubectl apply -f deployment.yaml
 ---
 
 ## 🛠 Installation — NGINX Ingress
+
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/cloud/deploy.yaml
 ```
@@ -123,6 +127,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 ---
 
 ## 🛠 Installation — MetalLB Load Balancer
+
 ```
 cd metallb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/manifests/metallb-native.yaml
@@ -135,6 +140,7 @@ kubectl apply -f config.yaml
 ## 🛠 Installation — HTTPS Ingress via cert-manager & Let's Encrypt
 
 Below will install cert-manager **v1.19.4**, which is the latest version as of **25th February 2026**.
+
 ```
 cd ingress
 kubectl create namespace cert-manager
@@ -150,6 +156,7 @@ Remember to open ports 80 and 443 on your router and forward traffic to the Meta
 ## 🛠 Installation — Applications
 
 For each app, edit `pv.yaml` to set your NFS server IP and path, edit `secrets.yaml` to set credentials, then:
+
 ```
 kubectl apply -f pv.yaml
 kubectl apply -f secrets.yaml
@@ -175,12 +182,68 @@ All services are exposed via Cloudflare-proxied subdomains. DNS records are kept
 ---
 
 ## ⬆️ Upgrading k3s
+
 ```
 curl -sfL https://get.k3s.io | sh -s - --disable=traefik --disable=servicelb --write-kubeconfig-mode 644
 kubectl get nodes
 ```
 
 Always check the [k3s release notes](https://github.com/k3s-io/k3s/releases) before upgrading.
+
+---
+
+## ⚠️ Gotchas & Lessons Learned
+
+### TLS Renewal Fails Silently Behind Cloudflare Proxy
+
+Domains proxied through Cloudflare (orange cloud) **cannot use HTTP-01 challenges**.
+Cloudflare intercepts the `.well-known/acme-challenge` request before it reaches the
+origin, returning a 526 error. cert-manager will silently rack up failed attempts
+(33 in one case) over weeks until the cert expires.
+
+**Fix:** Use DNS-01 solver scoped to Cloudflare-proxied domains in the ClusterIssuer.
+
+### cert-manager Needs Its Own Copy of the Cloudflare Secret
+
+cert-manager reads secrets from the `cert-manager` namespace, not `default`.
+The Cloudflare API token secret must exist in **both** namespaces:
+
+- `default/ddns-secret-cloudfare-api-token` — used by the DDNS CronJob
+- `cert-manager/ddns-secret-cloudfare-api-token` — used by cert-manager for DNS-01
+
+```bash
+kubectl create secret generic ddns-secret-cloudfare-api-token \
+  --from-literal=CLOUDFARE_API_TOKEN=<token> \
+  -n cert-manager
+```
+
+### ClusterIssuer Solver Config (DNS-01 + HTTP-01)
+
+```yaml
+solvers:
+- dns01:
+    cloudflare:
+      apiTokenSecretRef:
+        name: ddns-secret-cloudfare-api-token
+        key: CLOUDFARE_API_TOKEN
+  selector:
+    dnsNames:
+    - ha.mortylabs.com        # UK — Cloudflare proxied
+    - sa.mortylabs.com        # SA — Cloudflare proxied
+    - unifisa.mortylabs.com   # SA Unifi — Cloudflare proxied
+- http01:
+    ingress:
+      class: nginx            # fallback for non-proxied domains
+```
+
+### Monitoring Cert Expiry
+
+```bash
+kubectl get certificates -A                          # check READY status
+kubectl get orders -A                                # check for invalid orders
+kubectl describe certificate <name> -n default       # see failure reason
+kubectl logs -n cert-manager deployment/cert-manager # check controller logs
+```
 
 ---
 
