@@ -3,9 +3,9 @@
 > A lightweight K3s-based Kubernetes cluster, currently running version **`v1.34.4+k3s1`** as of **25th February 2026**, tailored for a personal homelab hosting `Home Assistant`, `InfluxDB`, `Grafana`, `MQTT`, `UniFi Controller`, `Pi-hole`, `deCONZ`, and more.
 
 [![K3s](https://img.shields.io/badge/K3s-v1.34.4%2Bk3s1-blue?logo=kubernetes)](https://k3s.io/)
-[![cert-manager](https://img.shields.io/badge/cert--manager-v1.19.4-green?logo=letsencrypt)](https://cert-manager.io/)
-[![MetalLB](https://img.shields.io/badge/MetalLB-v0.15.3-blue)](https://metallb.universe.tf/)
-[![ingress-nginx](https://img.shields.io/badge/ingress--nginx-v1.12.0-brightgreen?logo=nginx)](https://kubernetes.github.io/ingress-nginx/)
+[![cert-manager](https://img.shields.io/badge/cert--manager-v1.19.5-green?logo=letsencrypt)](https://cert-manager.io/)
+[![MetalLB](https://img.shields.io/badge/MetalLB-v0.16.1-blue)](https://metallb.universe.tf/)
+[![ingress-nginx](https://img.shields.io/badge/ingress--nginx-v1.15.1-brightgreen?logo=nginx)](https://kubernetes.github.io/ingress-nginx/)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/mortylabs/kubernetes?style=social)](https://github.com/mortylabs/kubernetes/stargazers)
 [![CI](https://github.com/mortylabs/kubernetes/actions/workflows/lint.yaml/badge.svg)](https://github.com/mortylabs/kubernetes/actions/workflows/lint.yaml)
