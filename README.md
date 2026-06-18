@@ -121,7 +121,7 @@ kubectl apply -f deployment.yaml
 ## 🛠 Installation — NGINX Ingress
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/cloud/deploy.yaml
 ```
 
 ---
@@ -130,7 +130,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 ```
 cd metallb
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.1/config/manifests/metallb-native.yaml
 vi config.yaml  # edit and set the IP address range reserved on your DHCP server
 kubectl apply -f config.yaml
 ```
@@ -139,12 +139,12 @@ kubectl apply -f config.yaml
 
 ## 🛠 Installation — HTTPS Ingress via cert-manager & Let's Encrypt
 
-Below will install cert-manager **v1.19.4**, which is the latest version as of **25th February 2026**.
+Below will install cert-manager **v1.19.5**, which is the latest version as of **18th June 2026**.
 
 ```
 cd ingress
 kubectl create namespace cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.4/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.5/cert-manager.yaml
 vi letsencrypt.yaml  # update your email address
 kubectl apply -f letsencrypt.yaml
 ```
