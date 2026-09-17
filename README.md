@@ -228,10 +228,9 @@ solvers:
         key: CLOUDFARE_API_TOKEN
   selector:
     dnsNames:
-    - ha.mortylabs.com        # UK — Cloudflare proxied
-    - sa.mortylabs.com        # SA — Cloudflare proxied
-    - unifisa.mortylabs.com   # SA Unifi — Cloudflare proxied
-- http01:
+    - site1.mortylabs.com        # USA Site1 — Cloudflare proxied
+    - site2.mortylabs.com        # USA Site2 — Cloudflare proxied
+    - http01:
     ingress:
       class: nginx            # fallback for non-proxied domains
 ```
