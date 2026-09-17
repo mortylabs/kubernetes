@@ -139,7 +139,7 @@ kubectl apply -f config.yaml
 
 ## 🛠 Installation — HTTPS Ingress via cert-manager & Let's Encrypt
 
-Below will install cert-manager **v1.19.5**, which is the latest version as of **18th June 2026**.
+Below will install cert-manager **v1.20.4**, which is the latest version as of **17th September 2026**.
 
 ```
 cd ingress
