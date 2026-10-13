@@ -6,6 +6,8 @@ metadata:
   name: govee2mqtt
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: govee2mqtt
